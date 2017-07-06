@@ -1,28 +1,24 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, DrawerLayoutAndroid } from 'react-native';
-import Toolbar from './components/Toolbar';
-import Login from './components/Login';
+import { StyleSheet, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { StackNavigator } from 'react-navigation';
+import Auth from './containers/Auth';
+import Login from './containers/Login';
+import configureStore from './store/configureStore';
+
+const store = configureStore();
+
+const Routes = StackNavigator({
+  Loading: { screen: Auth },
+  Login: { screen: Login },
+});
 
 export default class App extends Component {
-
-  onActionSelected(position) {
-    console.log(position);
-  }
   render() {
-    var navigationView = (
-      <View style={styles.navigationView}>
-        <Text style={{margin: 10, fontSize: 15, textAlign: 'left'}}>I'm in the Drawer!</Text>
-      </View>
-    );
-
     return (
-        <DrawerLayoutAndroid
-          drawerWidth={300}
-          drawerPosition={DrawerLayoutAndroid.positions.Left}
-          renderNavigationView={() => navigationView}>
-          <Toolbar />
-          <Login />
-        </DrawerLayoutAndroid>
+      <Provider store={store}>
+          <Routes />
+      </Provider>
     );
   }
 }
@@ -31,12 +27,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  navigationView: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginTop: 16
   }
 });
