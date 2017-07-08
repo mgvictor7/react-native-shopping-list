@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import {  RkText } from 'react-native-ui-kitten';
+import {  Text } from 'react-native-elements';
 
 export default class Loading extends Component {
   static navigationOptions = {
     header: null,
   };
-  
+
   render() {
     const { isFetching, authenticated, navigation } = this.props;
     if (!isFetching) {
       if (!authenticated) {
         navigation.navigate('Login');
       } else {
-        console.log('User is logeaded');
+        navigation.navigate('Home');
       }
     }
     return (
       <View style={styles.loading}>
-        <RkText rkType='header' >Loading</RkText>
+        <Text h2>Loading</Text>
       </View>
     );
   }

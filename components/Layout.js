@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, DrawerLayoutAndroid } from 'react-native';
-// import Toolbar from 'Toolbar';
+import { ScrollView, StyleSheet, Text, View, Image, DrawerLayoutAndroid } from 'react-native';
+import Toolbar from './Toolbar';
 
 export default class Layout extends Component {
-
-  onActionSelected(position) {
-    console.log(position);
+  constructor() {
+    super();
+    this.handleDrawer = this.handleDrawer.bind(this);
   }
+
+  handleDrawer() {
+    console.log('entra');
+  }
+
   render() {
     var navigationView = (
       <View style={styles.navigationView}>
@@ -14,13 +19,18 @@ export default class Layout extends Component {
       </View>
     );
 
+    console.log(this.props);
+
     return (
-        <DrawerLayoutAndroid
-          drawerWidth={300}
-          drawerPosition={DrawerLayoutAndroid.positions.Left}
-          renderNavigationView={() => navigationView}>
-          {/* <Toolbar /> */}
-        </DrawerLayoutAndroid>
+      <DrawerLayoutAndroid
+        ref={(_drawer) => this.drawer = _drawer}
+        drawerWidth={300}
+        drawerPosition={DrawerLayoutAndroid.positions.Left}
+        renderNavigationView={() => navigationView}>
+        <ScrollView style={styles.container}>
+          {this.props.children}
+        </ScrollView>
+      </DrawerLayoutAndroid>
     );
   }
 }
@@ -28,13 +38,12 @@ export default class Layout extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 16,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   navigationView: {
     flex: 1,
     backgroundColor: '#fff',
     marginTop: 16
-  }
+  },
 });

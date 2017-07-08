@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { RkTextInput, RkText, RkButton } from 'react-native-ui-kitten';
+import { View, StyleSheet,  TextInput } from 'react-native';
+import { Text, Button  } from 'react-native-elements';
 
 export default class Login extends Component {
   constructor() {
@@ -37,26 +37,25 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.login}>
-        <RkText rkType='header' >Login</RkText>
+        <Text h2>Login</Text>
         <View style={styles.form}>
-          <RkTextInput
-            rkType='rounded'
+          <TextInput
+            style={styles.sendBtn}
             placeholder='Email'
             keyboardType="email-address"
             onChangeText={(text) => { this.handleInputChange('email', text) }}
           />
-          <RkTextInput
+          <TextInput
+            style={styles.sendBtn}
             secureTextEntry={true}
-            rkType='rounded'
             placeholder='Password'
             onChangeText={(text) => { this.handleInputChange('password', text) }}
           />
-          <RkButton
-            rkType='primary '
+          <Button
+            title="Entrar"
             style={styles.sendBtn}
-            onPress={this.handleClick}>
-              Entrar
-          </RkButton>
+            onPress={this.handleClick}
+          />
         </View>
       </View>
     );
