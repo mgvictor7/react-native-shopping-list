@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import AuthReducer from './auth';
-import TaskReducer from './auth';
+import TaskReducer from './tasks';
 
 const rootReducer = combineReducers({
   auth: AuthReducer,

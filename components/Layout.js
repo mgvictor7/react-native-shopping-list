@@ -1,25 +1,32 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, Image, DrawerLayoutAndroid } from 'react-native';
-import Toolbar from './Toolbar';
+import { ScrollView, StyleSheet, Text, View, Image, DrawerLayoutAndroid, Button } from 'react-native';
+import ItemMenu from './ItemMenu';
 
 export default class Layout extends Component {
   constructor() {
     super();
-    this.handleDrawer = this.handleDrawer.bind(this);
+    this.handleClickButton = this.handleClickButton.bind(this);
   }
 
-  handleDrawer() {
-    console.log('entra');
+  handleClickButton() {
+    const {  signOutUser } = this.props;
+    signOutUser && signOutUser();
   }
 
   render() {
+    const { user } = this.props;
+
     var navigationView = (
       <View style={styles.navigationView}>
-        <Text style={{margin: 10, fontSize: 15, textAlign: 'left'}}>I'm in the Drawer!</Text>
+          <ItemMenu
+            textItem={`Hola ${user && user.email}`}
+          />
+          <Button
+            title='Cerrar'
+            onPress={this.handleClickButton}
+          />
       </View>
     );
-
-    console.log(this.props);
 
     return (
       <DrawerLayoutAndroid

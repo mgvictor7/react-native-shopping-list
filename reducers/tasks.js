@@ -1,7 +1,7 @@
 import { FETCH_TASK_LIST, TASK_REQUEST } from '../actions/tasks';
 
 const initialState =  {
-  isFetching: false,,
+  isFetching: false,
   tasks: {},
   error: null
 };

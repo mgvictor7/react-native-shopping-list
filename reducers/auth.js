@@ -13,8 +13,6 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         isFetching: true,
-        authenticated: false,
-        user: null,
         error: null
       };
     case AUTH_USER:

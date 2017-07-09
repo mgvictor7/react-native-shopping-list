@@ -22,8 +22,8 @@ export function signInUser(credentials) {
   return function(dispatch) {
     dispatch(requestAuthUser());
     firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
-      .then(response => {
-        dispatch(authUser());
+      .then(user => {
+        dispatch(authUser(user));
       })
       .catch(error => {
         dispatch(authError(error));
@@ -32,6 +32,7 @@ export function signInUser(credentials) {
 }
 
 export function signOutUser() {
+  console.log("signOutUser");
   firebase.auth().signOut();
   return {
     type: SIGN_OUT_USER

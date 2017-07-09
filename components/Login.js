@@ -3,6 +3,10 @@ import { View, StyleSheet,  TextInput } from 'react-native';
 import { Text, Button  } from 'react-native-elements';
 
 export default class Login extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   constructor() {
     super();
     this.state = {
@@ -14,12 +18,11 @@ export default class Login extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  static navigationOptions = {
-    header: null,
-  };
-
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+    const { navigation } = this.props;
+    if (nextProps.authenticated) {
+      navigation.navigate('Home');
+    }
   }
 
   handleClick() {
@@ -40,13 +43,13 @@ export default class Login extends Component {
         <Text h2>Login</Text>
         <View style={styles.form}>
           <TextInput
-            style={styles.sendBtn}
+            style={styles.inputText}
             placeholder='Email'
             keyboardType="email-address"
             onChangeText={(text) => { this.handleInputChange('email', text) }}
           />
           <TextInput
-            style={styles.sendBtn}
+            style={styles.inputText}
             secureTextEntry={true}
             placeholder='Password'
             onChangeText={(text) => { this.handleInputChange('password', text) }}
@@ -54,6 +57,7 @@ export default class Login extends Component {
           <Button
             title="Entrar"
             style={styles.sendBtn}
+            backgroundColor='#397af8'
             onPress={this.handleClick}
           />
         </View>
@@ -65,13 +69,15 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   login: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
     padding: 16,
   },
   form: {
     marginTop: 16,
-    alignItems: 'center',
+    // alignItems: 'center',
+  },
+  inputText: {
+    height: 40,
   },
   sendBtn: {
     marginTop: 16,
