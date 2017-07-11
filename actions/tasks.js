@@ -1,8 +1,5 @@
 import firebase from 'firebase';
-import Config from '../config/config';
 import { generateKey } from '../lib/utils';
-
-// firebase.initializeApp(Config.firebaseConfig());
 
 /**
  * User autentication

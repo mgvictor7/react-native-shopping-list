@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import PropTypes from 'prop-types';
+import { StyleSheet, Modal, Text, View, Button } from 'react-native';
 import { Icon, List, ListItem } from 'react-native-elements';
+import ActionButton from 'react-native-action-button';
 import Layout from './Layout';
+import TaskForm from './TaskForm';
 
 export default class Home extends Component {
   constructor() {
     super();
     this.state = {
       tasks: null,
+      products: null,
+      shops: null,
+      tasks: null,
+      modalVisible: false,
     };
 
     this.renderList = this.renderList.bind(this);
@@ -30,11 +37,16 @@ export default class Home extends Component {
 
   componentWillMount() {
     this.props.fetchTaskList();
+    this.props.fetchProductList();
+    this.props.fetchShopList();
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     this.setState({
       tasks: nextProps.tasks,
+      products: nextProps.products,
+      shops: nextProps.shops,
     });
   }
 
@@ -89,6 +101,13 @@ export default class Home extends Component {
             :
             this.renderList()
           }
+
+          <ActionButton
+            buttonColor="rgba(231,76,60,1)"
+            onPress={() => { this.setState({ modalVisible: true })}}
+          />
+
+          <TaskForm  modalVisible={this.state.modalVisible}/>
         </Layout>
     );
   }
