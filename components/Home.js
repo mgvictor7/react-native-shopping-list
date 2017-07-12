@@ -42,7 +42,6 @@ export default class Home extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     this.setState({
       tasks: nextProps.tasks,
       products: nextProps.products,
@@ -94,6 +93,7 @@ export default class Home extends Component {
 
   render() {
     const { user, signOutUser, isFetching } = this.props;
+    const { modalVisible, shops, products } = this.state;
     return (
         <Layout user={user} signOutUser={signOutUser}>
           {isFetching ?
@@ -107,7 +107,11 @@ export default class Home extends Component {
             onPress={() => { this.setState({ modalVisible: true })}}
           />
 
-          <TaskForm  modalVisible={this.state.modalVisible}/>
+          <TaskForm
+            modalVisible={modalVisible}
+            products={products}
+            shops={shops}
+          />
         </Layout>
     );
   }
