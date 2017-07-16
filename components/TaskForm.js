@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Modal, TouchableHighlight, View, Picker } from 'react-native';
+import { StyleSheet, Modal,  View } from 'react-native';
 import { Text, Icon, FormLabel, FormInput, Button } from 'react-native-elements'
 import CustomPicker from './CustomPicker';
 import color from '../lib/colors';
@@ -10,27 +10,21 @@ export default class TaskForm extends Component {
     this.state = {
       products: {},
       shops: {},
-      modalVisible: false,
       quantity: null,
-      product: null,
-      shop: null,
+      productId: null,
+      shopId: null,
     };
 
-    this.setModalVisible = this.setModalVisible.bind(this);
     this.handleChangeInput = this.handleChangeInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    const {modalVisible, products, shops} = nextProps;
+    const { products, shops} = nextProps;
     this.setState({
       products,
       shops,
     });
-    this.setModalVisible(modalVisible);
-  }
-
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
   }
 
   handleChangeInput(id, value) {
@@ -39,17 +33,38 @@ export default class TaskForm extends Component {
     });
   }
 
+  handleSubmit() {
+    const { products, shops, productId, shopId, quantity } = this.state;
+    const data = {
+      product: products[productId],
+      shop: shops[shopId],
+      task: {
+        done: false,
+        quantity
+      }
+    };
+
+    this.props.onShowChange();
+
+    this.setSate({
+      quantity: null,
+      productId: null,
+      shopId: null,
+    });
+
+    this.props.onSubmit(data);
+  }
+
   render() {
-    const { shops, products, product, shop } = this.state;
-    const shopsIds = Object.keys(shops);
-    const productsIds = Object.keys(products);
+    const { shops, products, productId, shopId } = this.state;
+    const { modalVisible, onShowChange } = this.props;
 
     return (
       <Modal
         animationType={"slide"}
         transparent={false}
-        visible={this.state.modalVisible}
-        onRequestClose={() =>  this.setModalVisible(!this.state.modalVisible)}
+        visible={modalVisible}
+        onRequestClose={onShowChange}
       >
         <View>
           <View style={styles.modalHeader}>
@@ -59,7 +74,7 @@ export default class TaskForm extends Component {
               type='font-awesome'
               color='#ccc'
               size={16}
-              onPress={() => this.setModalVisible(!this.state.modalVisible)}
+              onPress={this.props.onShowChange}
             />
           </View>
           <View style={styles.formContent}>
@@ -67,19 +82,22 @@ export default class TaskForm extends Component {
             <FormLabel>Producto</FormLabel>
             <CustomPicker
               objectData={products}
-              elementName="product"
+              elementName="productId"
               elementLabel="producto"
-              elementSelected={product}
+              elementSelected={productId}
               onInputChange={this.handleChangeInput}
             />
             <FormLabel>Cantidad</FormLabel>
-            <FormInput onChangeText={(text) => this.handleChangeInput('quantity', text)} />
+            <FormInput
+              style={styles.input}
+              onChangeText={(text) => this.handleChangeInput('quantity', text)}
+            />
             <FormLabel>Tienda</FormLabel>
             <CustomPicker
               objectData={shops}
-              elementName="shop"
+              elementName="shopId"
               elementLabel="tienda"
-              elementSelected={shop}
+              elementSelected={shopId}
               onInputChange={this.handleChangeInput}
             />
             <Button
@@ -87,6 +105,7 @@ export default class TaskForm extends Component {
               title='Guardar'
               backgroundColor={color.defaultPrimaryColor}
               buttonStyle={styles.button}
+              onPress={this.handleSubmit}
             />
           </View>
         </View>
@@ -109,7 +128,10 @@ const styles = StyleSheet.create({
   },
   formContent: {
     flexDirection: 'column',
-    margin: 16,
+    padding: 16,
+  },
+  input: {
+    marginRight: 10,
   },
   button: {
     marginTop:16,

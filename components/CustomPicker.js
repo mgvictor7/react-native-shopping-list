@@ -6,28 +6,31 @@ export default class CustomPicker extends Component {
   constructor() {
     super();
     this.state = {
-      objectData: {}
+      data: []
     };
   }
 
   componentWillMount() {
-    const {objectData} = this.props;
-    this.setState({
-      objectData
-    });
+    const { objectData } = this.props;
+    if  (objectData) {
+      this.setState({
+        data: Object.values(objectData).sort((a, b)  => a.name.localeCompare( b.name)),
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    const {objectData} = nextProps;
-    this.setState({
-      objectData
-    });
+    const { objectData } = nextProps;
+    if  (objectData) {
+      this.setState({
+        data: Object.values(objectData).sort((a, b)  => a.name.localeCompare( b.name)),
+      });
+    }
   }
 
   render() {
     const { onInputChange, elementName, elementSelected, elementLabel } = this.props;
-    const { objectData } = this.state;
-    const objectIds = Object.keys(objectData);
+    const { data } = this.state;
 
     return (
       <View style={styles.picker}>
@@ -36,9 +39,9 @@ export default class CustomPicker extends Component {
           onValueChange={(itemValue, itemIndex) =>  onInputChange(elementName, itemValue)}
         >
           <Picker.Item label="" value="-1" />
-          {objectIds && objectIds.length ?
-            objectIds.map(objectId => (
-              <Picker.Item key={objectId} label={objectData[objectId].name} value={objectId} />
+          {data.length ?
+            data.map(element => (
+              <Picker.Item key={element._id} label={element.name} value={element._id} />
             ))
             :
             null

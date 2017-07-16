@@ -17,7 +17,7 @@ function requestTask() {
 export function fetchTaskList() {
   return function(dispatch) {
     dispatch(requestTask());
-    const tasksRef = firebase.database().ref('list');
+    const tasksRef = firebase.database().ref('tasks').orderByChild("finished").equalTo(false);
     tasksRef.on('value', (data) => {
       dispatch({
         type: FETCH_TASK_LIST,

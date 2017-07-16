@@ -20,6 +20,7 @@ export default class Home extends Component {
     this.renderList = this.renderList.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.handleCheckItem = this.handleCheckItem.bind(this);
+    this.handleShowForm = this.handleShowForm.bind(this);
   }
 
   static navigationOptions = (aux) => ({
@@ -58,14 +59,24 @@ export default class Home extends Component {
       this.setState({
         tasks,
       });
+      this.props.checkedTask(id, tasks[id].done);
     }
   }
 
+  handleShowForm() {
+    console.log('entra');
+    this.setState({ modalVisible: !this.state.modalVisible });
+  }
+
   renderItem(id, item) {
+    const { products, shops } = this.state;
+    const product = products[item.productId];
+    const shop = shops[item.shopId];
+    const title = `${item.quantity} de ${product && product.name} en ${shop && shop.name}`;
     return (
       <ListItem
         key={id}
-        title={item.quantity}
+        title={title}
         hideChevron
         titleStyle={[styles.item, item.done ? styles.itemDone : null]}
         onPress={(event) => { this.handleCheckItem(id, event); }}
@@ -95,24 +106,26 @@ export default class Home extends Component {
     const { user, signOutUser, isFetching } = this.props;
     const { modalVisible, shops, products } = this.state;
     return (
+      <View style={styles.container}>
         <Layout user={user} signOutUser={signOutUser}>
           {isFetching ?
             <Text h1>Loading</Text>
             :
             this.renderList()
           }
-
-          <ActionButton
-            buttonColor="rgba(231,76,60,1)"
-            onPress={() => { this.setState({ modalVisible: true })}}
-          />
-
           <TaskForm
             modalVisible={modalVisible}
             products={products}
             shops={shops}
+            onSubmit={this.props.createTask}
+            onShowChange={this.handleShowForm}
           />
         </Layout>
+        <ActionButton
+          buttonColor="rgba(231,76,60,1)"
+          onPress={this.handleShowForm}
+        />
+      </View>
     );
   }
 }
@@ -120,7 +133,6 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   item: {
     fontSize: 16,
